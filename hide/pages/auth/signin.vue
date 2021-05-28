@@ -1,15 +1,14 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="12" sm="8" md="4" align="center">
-      <v-card class="elevation-4 text-left">
-        <v-card-title class="fancy-title align-center justify-center">Dello</v-card-title>
-        <v-card-text>
+      <v-card class="elevation-4 text-left" >
+        <v-card-title class="fancy-title align-center justify-center">Jello</v-card-title><v-card-text>
           <v-form>
             <v-text-field
               label="Login"
               name="login"
               prepend-icon="mdi-account"
-              type="email"
+              type="text"
               v-model="auth.email"
             ></v-text-field>
 
@@ -28,7 +27,8 @@
             @click="login"
             depressed
             large
-          >Login</v-btn>
+            >Login</v-btn
+          >
         </v-card-actions>
       </v-card>
       <v-snackbar
@@ -38,7 +38,7 @@
         bottom
         center
       >
-        {{snackbarText}}
+        {{ snackbarText }}
       </v-snackbar>
     </v-col>
   </v-row>
@@ -47,31 +47,28 @@
 <script>
 export default {
   layout: 'signin',
-  data(){
+  data() {
     return {
       snackbar: false,
       snackbarText: 'No error message',
-      auth:{
+      auth: {
         email: '',
         password: ''
       }
     }
   },
   methods: {
-    login(){
+    login() {
       let that = this
-      this.$fire.auth.signInWithEmailAndPassword(this.auth.email, this.auth.password).catch(function (error){
+      this.$fire.auth.signInWithEmailAndPassword(this.auth.email, this.auth.password)
+      .catch(function (error){
         that.snackbarText = error.message
         that.snackbar = true
       }).then((user) => {
+        //we are signed in
         $nuxt.$router.push('/')
       })
     }
   }
-
 }
 </script>
-
-<style>
-
-</style>
