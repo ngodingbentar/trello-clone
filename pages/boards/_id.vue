@@ -2,7 +2,14 @@
   <div
     class="d-flex flex-column board"
   >
-  <button @click="cek">cek</button>
+  <!-- <button @click="cek">cek</button> -->
+  <div class="d-block">
+      <v-container fluid class="jello-topbar">
+        <div class="d-flex justify-space-between">
+          <v-icon small @click="deleteBoard()">mdi-delete-outline</v-icon>
+        </div>
+      </v-container>
+    </div>
     <h1>{{ board.title }}</h1>
     <small>created {{ board.dateCreated | formatDate }}</small>
     <div class="d-flex flex-row pr-6 pt-3">
@@ -147,6 +154,7 @@
 
 <script>
 import { computed, defineComponent, reactive, ref, useContext } from '@nuxtjs/composition-api'
+import { v4 as uuidv4 } from 'uuid'
 
 export default defineComponent({
   // layout: 'board',
@@ -161,7 +169,7 @@ export default defineComponent({
     const currentCard=ref({})
     const cardDraggedId = ref('')
     const cardDraggedListId = ref('')
-    const board = ref({})
+    const board = ref([])
     const listId=ref('')
     const myimg=ref('')
     const list=ref({
@@ -177,19 +185,6 @@ export default defineComponent({
     
 
     const tempId = ref('')
-    // const boardRef = ref('')
-
-    // let boardRef = ref($nuxt.$fire.firestore
-    //   .collection('users')
-    //   .doc($nuxt.$fire.auth.currentUser.uid)
-    //   .collection('boards')
-    //   .doc(tempId)
-    //   .onSnapshot((doc) => {
-    //     if (doc.exists) {
-    //       board.value = doc.data()
-    //       board.value.id = tempId
-    //     }
-    //   }))
 
     return {
       dialog,
@@ -206,7 +201,11 @@ export default defineComponent({
       cek,
       allowDrop,
       drag,
-      drop
+      drop,
+      deleteList,
+      createList,
+      createCard,
+      deleteBoard
     }
 
     async function asyncData(params) {
@@ -227,14 +226,8 @@ export default defineComponent({
         })
         .catch(function (error) {})
         board.value = boardData.value
-        console.log('boardData.value',boardData.value)
-        console.log('img1',boardData.value.image)
-        console.log('img2', typeof boardData.value.image)
-        // myimg.value = boardData.value.image.downloadURL
         tempId.value = boardData.value.id
-        // console.log('board.value', board.value)
-        // console.log('board.value', boardData.value)
-        createdFunc()
+        // createdFunc()
     }
 
     async function createdFunc(){
@@ -250,14 +243,92 @@ export default defineComponent({
           board.value.id = tempId.value
         }
       })
+    }
 
-      console.log('boardRef', boardRef)
+    async function createCard(){
+      dialogCard.value = false
+      //show modal to capture card name
+      //add card
+      if (card.value.title != '') {
+        //add to firebase
+        //Let's give our card a created date.
+        card.value.id = uuidv4()
+        card.value.dateCreated = Date.now()
+        card.value.listId = listId.value
+        if (board.value.lists) {
+          let index = -1
+          let count = 0
+          for (const list of board.value.lists) {
+            if (list.id === listId.value) {
+              index = count
+            }
+            count++
+          }
+          if (index != -1) {
+            //we found the list, now push our card
+            if (board.value.lists[index].cards) {
+              board.value.lists[index].cards.push(card.value)
+            } else {
+              board.value.lists[index].cards = []
+              board.value.lists[index].cards.push(card.value)
+            }
+          }
+        }
+        await updateBoard()
+        card.value = {}
+        listId.value = ''
+      }
+    }
+
+    async function createList() {
+      dialog.value = false
+      if (list.value.title != '') {
+        list.value.id = uuidv4()
+        list.value.cards = []
+        list.value.dateCreated = Date.now()
+        if (board.value.lists) {
+          board.value.lists.push(list.value)
+        } else {
+          board.value.lists = []
+          board.value.lists.push(list.value)
+        }
+        await updateBoard()
+        list.value = {}
+      }
+    }
+
+    async function deleteList(listId){
+      let index = -1
+      let count = 0
+      for (const list of board.value.lists) {
+        if(list.id == listId) {
+          index = count
+        }
+        count++
+      }
+      if(index > -1) {
+        board.value.lists.splice(index, 1)
+        await updateBoard()
+      }
+    }
+
+    async function deleteBoard() {
+      try {
+        await $nuxt.$fire.firestore
+        .collection('users')
+        .doc($nuxt.$fire.auth.currentUser.uid)
+        .collection('boards')
+        .doc(board.value.id).delete().then(() => {
+          $nuxt.$router.push('/')
+        }).catch(() => {
+          
+        })
+      } catch (error) {
+        $nuxt.$router.push('/')
+      }
     }
 
     async function updateCardList(newlistId) {
-      console.log('updateCardList')
-      // let that = this
-
       let tempListIndex = -1
       let tempCardIndex = -1
       let newListIndex = -1
@@ -298,17 +369,13 @@ export default defineComponent({
     }
 
     async function allowDrop(ev) {
-      console.log('allowDrop')
       ev.preventDefault()
     }
     async function drag(ev, card) {
-      console.log('drag', card)
-
       currentCard.value = card
     }
 
     async function drop(ev, listId) {
-      console.log('drop', listId)
       ev.preventDefault()
       updateCardList(listId)
     }
