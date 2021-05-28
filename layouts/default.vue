@@ -19,6 +19,7 @@
                   <nuxt-link to="/">
                     <v-row no-gutters align="center" justify="center">
                       <h3 class="logo">Jello</h3>
+                      <!-- <button @click="cek">cek</button> -->
                     </v-row>
                   </nuxt-link>
                 </v-row>
@@ -31,7 +32,7 @@
                   <v-icon @click="drawer = false">mdi-close</v-icon>
 
                     <v-row no-gutters align="center" justify="end"> 
-                        <!-- <p class="jello-user">Signed in as<br>
+                        <!-- <p v-if="user" class="jello-user">Signed in as<br>
                         {{ $nuxt.$fire.auth.currentUser.email }}</p> -->
                         &nbsp;
                          <v-icon>mdi-account-circle-outline</v-icon>
@@ -66,13 +67,25 @@
 </template>
 
 <script>
-export default {
-  data() {
+import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  setup() {
+
+    const drawer = ref(false)
+    // const user = ref($nuxt.$fire.auth.currentUser.email)
+    // console.log('user', user)
+
     return {
-      drawer: false
+      drawer,
+      cek
+    }
+
+    async function cek(){
+      console.log(user.value)
     }
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

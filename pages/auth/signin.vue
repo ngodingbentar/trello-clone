@@ -48,6 +48,7 @@
 import { computed, defineComponent, reactive, ref, useContext } from '@nuxtjs/composition-api'
 
 export default defineComponent({
+  layout: 'signin',
   setup() {
     const { app } = useContext()
 
