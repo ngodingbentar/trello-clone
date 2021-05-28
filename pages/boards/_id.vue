@@ -153,13 +153,13 @@
 
 
 <script>
-import { computed, defineComponent, reactive, ref, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { v4 as uuidv4 } from 'uuid'
 
 export default defineComponent({
   // layout: 'board',
   setup() {
-    const { app, route } = useContext()
+    const { route } = useContext()
     const pageId = route.value.params.id
 
     const dialog = ref(false)
@@ -171,7 +171,6 @@ export default defineComponent({
     const cardDraggedListId = ref('')
     const board = ref([])
     const listId=ref('')
-    const myimg=ref('')
     const list=ref({
       title: 'dew'
     })
@@ -204,7 +203,10 @@ export default defineComponent({
       drop,
       deleteList,
       createList,
+      editCard,
       createCard,
+      deleteCard,
+      updateCard,
       deleteBoard
     }
 
@@ -277,6 +279,54 @@ export default defineComponent({
         await updateBoard()
         card.value = {}
         listId.value = ''
+      }
+    }
+
+    function editCard(card){
+      dialogEditCard.value = true
+      currentCard.value = card
+    }
+
+    async function updateCard() {
+      let that = this
+      dialogEditCard.value = false
+      for (const list of board.value.lists) {
+        if (currentCard.value.listId === list.id) {
+          //correct list, now find card
+          for (const card of list.cards) {
+            if (card.id === currentCard.value.id) {
+              card = currentCard.value
+            }
+          }
+        }
+      }
+      await updateBoard()
+    }
+
+    async function deleteCard() {
+      dialogEditCard.value = false
+      let i = 0
+      let j = 0
+      let index = {
+        list: -1,
+        card: -1,
+      }
+      for (const list of board.value.lists) {
+        if (currentCard.value.listId === list.id) {
+          //correct list, now find card
+          for (const card of list.cards) {
+            if (card.id === currentCard.value.id) {
+              index.list = i
+              index.card = j
+            }
+            j++
+          }
+        }
+        i++
+      }
+      if (index.list > -1) {
+        board.value.lists[index.list].cards.splice(index.card, 1)
+        await updateBoard()
       }
     }
 
@@ -393,7 +443,7 @@ export default defineComponent({
 .board {
   padding: 12px;
   height: 100vh;
-  overflow: scroll;
+  // overflow: scroll;
   .list {
     min-width: 250px;
     background-color: rgb(228 228 228 / 35%);
