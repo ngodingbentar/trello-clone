@@ -9,7 +9,7 @@
               name="login"
               prepend-icon="mdi-account"
               type="text"
-              v-model="email"
+              v-model="auth.email"
             ></v-text-field>
 
             <v-text-field
@@ -17,7 +17,7 @@
               name="password"
               prepend-icon="mdi-lock"
               type="password"
-              v-model="password"
+              v-model="auth.password"
             ></v-text-field>
           </v-form>
         </v-card-text>
@@ -45,42 +45,30 @@
 </template>
 
 <script>
-import { computed, defineComponent, reactive, ref, useContext } from '@nuxtjs/composition-api'
-
-export default defineComponent({
-  setup() {
-    const { app } = useContext()
-
-    const snackbar = ref(false)
-    const snackbarText = ref('No error message')
-    const email=ref('')
-    const password=ref('')
-    const auth = ref({
-      email: '',
-      password: ''
-    })
-
+export default {
+  layout: 'signin',
+  data() {
     return {
-      snackbar,
-      snackbarText,
-      auth,
-      email,
-      password,
-      login
-    }
-
-    async function login(){
-      try{
-        app.$fire.auth.signInWithEmailAndPassword(email.value, password.value).catch(function(error){
-          snackbarText.value = error.message
-          snackbar.value = true
-        }).then((user) => {
-          app.router?.push('/')
-        })
-      }catch(err){
-        console.log('err', err)
+      snackbar: false,
+      snackbarText: 'No error message',
+      auth: {
+        email: '',
+        password: ''
       }
     }
   },
-})
+  methods: {
+    login() {
+      let that = this
+      this.$fire.auth.signInWithEmailAndPassword(this.auth.email, this.auth.password)
+      .catch(function (error){
+        that.snackbarText = error.message
+        that.snackbar = true
+      }).then((user) => {
+        //we are signed in
+        $nuxt.$router.push('/')
+      })
+    }
+  }
+}
 </script>
