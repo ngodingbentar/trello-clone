@@ -1,66 +1,8 @@
 <template>
   <div
     class="d-flex flex-column board"
-    :style="
-      board.image.downloadURL != ''
-        ? `background:url(${board.image.downloadURL});background-size:cover;`
-        : board.color
-        ? `background-color:${board.color}`
-        : ''
-    "
   >
-    <div class="d-block">
-      <v-container fluid class="jello-topbar">
-        <div class="d-flex justify-space-between">
-          <v-icon @click="drawer = true">mdi-menu</v-icon>
-          <nuxt-link to="/">
-            <v-row no-gutters align="center" justify="space-between">
-              <h3 class="logo">Jello</h3>
-            </v-row>
-          </nuxt-link>
-          <v-icon small @click="deleteBoard()">mdi-delete-outline</v-icon>
-        </div>
-      </v-container>
-      <v-navigation-drawer
-        v-model="drawer"
-        fixed
-        left
-        class="d-block px-3 py-3"
-      >
-        <v-container fluid class="jello-topbar">
-          <v-row no-gutters align="center" justify="space-between">
-            <v-icon @click="drawer = false">mdi-close</v-icon>
-
-            <v-row no-gutters align="center" justify="end">
-              <p class="jello-user">
-                Signed in as<br />
-                {{ $nuxt.$fire.auth.currentUser.email }}
-              </p>
-              &nbsp;
-              <v-icon>mdi-account-circle-outline</v-icon>
-            </v-row>
-          </v-row>
-        </v-container>
-        <v-container class="d-block menu-items">
-          <div class="d-flex flex-column">
-            <div class="d-flex">
-              <br />
-            </div>
-            <div class="d-flex">
-              <nuxt-link to="/">
-                <v-icon>mdi-view-dashboard-variant-outline</v-icon
-                >&nbsp;&nbsp;<b>My Boards</b>
-              </nuxt-link>
-            </div>
-            <div class="d-flex">
-              <nuxt-link to="/auth/signout">
-                <v-icon>mdi-exit-to-app</v-icon>&nbsp;&nbsp;<b>Sign out</b>
-              </nuxt-link>
-            </div>
-          </div>
-        </v-container>
-      </v-navigation-drawer>
-    </div>
+  <button @click="cek">cek</button>
     <h1>{{ board.title }}</h1>
     <small>created {{ board.dateCreated | formatDate }}</small>
     <div class="d-flex flex-row pr-6 pt-3">
@@ -76,7 +18,6 @@
         <v-icon small @click="deleteList(list.id)">mdi-delete-outline</v-icon>
       </div>
 
-      <!--display cards-->
        <v-card
           v-for="card in list.cards"
           :draggable="true"
@@ -100,6 +41,7 @@
           >Add card</v-btn
         >
       </div>
+
        <v-dialog v-model="dialogCard" persistent max-width="600px">
         <v-card elevation="0">
           <v-card-title>
@@ -129,6 +71,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+
+
       <div class="d-flex flex-row">
         <v-btn depressed @click="dialog = true" class="create-list"
           >Create new list</v-btn
@@ -163,6 +107,7 @@
           </v-card>
         </v-dialog>
       </div>
+
       <v-dialog v-model="dialogEditCard" persistent max-width="600px">
         <v-card elevation="0">
           <v-card-title>
@@ -199,87 +144,119 @@
   </div>
 </template>
 
+
 <script>
-import { v4 as uuidv4 } from 'uuid'
-export default {
-  layout: 'board',
-  data() {
+import { computed, defineComponent, reactive, ref, useContext } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  // layout: 'board',
+  setup() {
+    const { app, route } = useContext()
+    const pageId = route.value.params.id
+
+    const dialog = ref(false)
+    const dialogCard = ref(false)
+    const dialogEditCard = ref(false)
+    const drawer = ref(false)
+    const currentCard=ref({})
+    const cardDraggedId = ref('')
+    const cardDraggedListId = ref('')
+    const board = ref({})
+    const listId=ref('')
+    const myimg=ref('')
+    const list=ref({
+      title: 'dew'
+    })
+    const card=ref({
+      title: ''
+    })
+
+    const boardData = ref({})
+
+    asyncData(pageId)
+    
+
+    const tempId = ref('')
+    // const boardRef = ref('')
+
+    // let boardRef = ref($nuxt.$fire.firestore
+    //   .collection('users')
+    //   .doc($nuxt.$fire.auth.currentUser.uid)
+    //   .collection('boards')
+    //   .doc(tempId)
+    //   .onSnapshot((doc) => {
+    //     if (doc.exists) {
+    //       board.value = doc.data()
+    //       board.value.id = tempId
+    //     }
+    //   }))
+
     return {
-      listId: '',
-      list: {
-        title: '',
-      },
-      card: {
-        title: '',
-      },
-      currentCard: {},
-      cardDraggedId: '',
-      cardDraggedListId: '',
-      dialog: false,
-      dialogCard: false,
-      dialogEditCard: false,
-      drawer: false,
+      dialog,
+      dialogCard,
+      dialogEditCard,
+      board,
+      card,
+      drawer,
+      cardDraggedId,
+      cardDraggedListId,
+      listId,
+      list,
+      currentCard,
+      cek,
+      allowDrop,
+      drag,
+      drop
     }
-  },
-  async asyncData({ params }) {
-    //lets get our board data before page load, and then after that await changes
-    let boardRef = $nuxt.$fire.firestore
+
+    async function asyncData(params) {
+      // console.log('params', params)
+      const boardRef = $nuxt.$fire.firestore
+        .collection('users')
+        .doc($nuxt.$fire.auth.currentUser.uid)
+        .collection('boards')
+        .doc(params)
+
+      await boardRef
+        .get()
+        .then(function (doc) {
+          if (doc.exists) {
+            boardData.value = doc.data()
+            boardData.value.id = params
+          }
+        })
+        .catch(function (error) {})
+        board.value = boardData.value
+        console.log('boardData.value',boardData.value)
+        console.log('img1',boardData.value.image)
+        console.log('img2', typeof boardData.value.image)
+        // myimg.value = boardData.value.image.downloadURL
+        tempId.value = boardData.value.id
+        // console.log('board.value', board.value)
+        // console.log('board.value', boardData.value)
+        createdFunc()
+    }
+
+    async function createdFunc(){
+      let boardRef = $nuxt.$fire.firestore
       .collection('users')
       .doc($nuxt.$fire.auth.currentUser.uid)
       .collection('boards')
-      .doc(params.id)
-    let boardData = {}
-    await boardRef
-      .get()
-      .then(function (doc) {
-        if (doc.exists) {
-          boardData = doc.data()
-          boardData.id = params.id
-        }
-      })
-      .catch(function (error) {})
-    // if (boardData.color != '' || boardData.image.downloadURL != '') {
-    //   $nuxt.$emit('toggle-alt-topbar')
-    // }
-    return { board: boardData }
-  },
-  created() {
-    let that = this
-    let tempId = this.board.id
-    let boardRef = $nuxt.$fire.firestore
-      .collection('users')
-      .doc($nuxt.$fire.auth.currentUser.uid)
-      .collection('boards')
-      .doc(tempId)
+      .doc(tempId.value)
       .onSnapshot((doc) => {
         if (doc.exists) {
-          that.board = doc.data()
-          that.board.id = tempId
+          console.log('doc', doc.data())
+          board.value = doc.data()
+          board.value.id = tempId.value
         }
       })
-  },
-  methods: {
-    async createList() {
-      let that = this
-      that.dialog = false
-      if (that.list.title != '') {
-        //add to firebase
-        //Let's give our list a created date.
-        that.list.id = uuidv4()
-        that.list.cards = []
-        that.list.dateCreated = Date.now()
-        if (that.board.lists) {
-          that.board.lists.push(that.list)
-        } else {
-          that.board.lists = []
-          that.board.lists.push(that.list)
-        }
-        await that.updateBoard()
-        that.list = {}
-      }
-    },
-    async updateCardList(newlistId) {
-      let that = this
+
+      console.log('boardRef', boardRef)
+    }
+
+    async function updateCardList(newlistId) {
+      console.log('updateCardList')
+      // let that = this
 
       let tempListIndex = -1
       let tempCardIndex = -1
@@ -287,16 +264,14 @@ export default {
       let tempListCount = 0
       let tempCardCount = 0
 
-      //get the index in current cards current list
-      for (const list of that.board.lists) {
+      for (const list of board.value.lists) {
         if (list.id === newlistId) {
           newListIndex = tempListCount
         }
-        if (that.currentCard.listId === list.id) {
-          //correct list, now find card
+        if (currentCard.value.listId === list.id) {
           tempListIndex = tempListCount
           for (const card of list.cards) {
-            if (card.id === that.currentCard.id) {
+            if (card.id === currentCard.value.id) {
               tempCardIndex = tempCardCount
             }
             tempCardCount++
@@ -305,148 +280,46 @@ export default {
         tempListCount++
       }
 
-      //remove currentCard from current list
-      that.board.lists[tempListIndex].cards.splice(tempCardIndex, 1)
+      board.value.lists[tempListIndex].cards.splice(tempCardIndex, 1)
 
-      //add currentCard to its new list
-      that.currentCard.listId = newlistId
-      that.board.lists[newListIndex].cards.push(that.currentCard)
+      currentCard.value.listId = newlistId
+      board.value.lists[newListIndex].cards.push(currentCard.value)
 
-      await that.updateBoard()
-    },
-    allowDrop(ev) {
-      ev.preventDefault()
-    },
-    drag(ev, card) {
-      this.currentCard = card
-    },
-    drop(ev, listId) {
-      ev.preventDefault()
-      this.updateCardList(listId)
-    },
-    async deleteList(listId){
-      let that = this
-      let index = -1
-      let count = 0
-      for (const list of that.board.lists) {
-        if(list.id == listId) {
-          index = count
-        }
-        count++
-      }
-      if(index > -1) {
-        that.board.lists.splice(index, 1)
-        await that.updateBoard()
-      }
-    },
-    async createCard(){
-       let that = this
-      that.dialogCard = false
-      //show modal to capture card name
-      //add card
-      if (that.card.title != '') {
-        //add to firebase
-        //Let's give our card a created date.
-        that.card.id = uuidv4()
-        that.card.dateCreated = Date.now()
-        that.card.listId = that.listId
-        if (that.board.lists) {
-          let index = -1
-          let count = 0
-          for (const list of that.board.lists) {
-            if (list.id === that.listId) {
-              index = count
-            }
-            count++
-          }
-          if (index != -1) {
-            //we found the list, now push our card
-            if (that.board.lists[index].cards) {
-              that.board.lists[index].cards.push(that.card)
-            } else {
-              that.board.lists[index].cards = []
-              that.board.lists[index].cards.push(that.card)
-            }
-          }
-        }
-        await that.updateBoard()
-        that.card = {}
-        that.listId = ''
-      }
-    },
-    editCard(card){
-      this.dialogEditCard = true
-      this.currentCard = card
-    },
-    async updateCard() {
-      let that = this
-      that.dialogEditCard = false
-      for (const list of that.board.lists) {
-        if (that.currentCard.listId === list.id) {
-          //correct list, now find card
-          for (const card of list.cards) {
-            if (card.id === that.currentCard.id) {
-              card = that.currentCard
-            }
-          }
-        }
-      }
-      await that.updateBoard()
-    },
-    async deleteCard() {
-      let that = this
-      that.dialogEditCard = false
-      let i = 0
-      let j = 0
-      let index = {
-        list: -1,
-        card: -1,
-      }
-      for (const list of that.board.lists) {
-        if (that.currentCard.listId === list.id) {
-          //correct list, now find card
-          for (const card of list.cards) {
-            if (card.id === that.currentCard.id) {
-              index.list = i
-              index.card = j
-            }
-            j++
-          }
-        }
-        i++
-      }
-      if (index.list > -1) {
-        that.board.lists[index.list].cards.splice(index.card, 1)
-        await that.updateBoard()
-      }
-    },
-    async deleteBoard() {
-      let that = this
-      try {
-        await that.$fire.firestore
+      await updateBoard()
+    }
+
+    async function updateBoard() {
+      await $nuxt.$fire.firestore
         .collection('users')
-        .doc(that.$fire.auth.currentUser.uid)
+        .doc($nuxt.$fire.auth.currentUser.uid)
         .collection('boards')
-        .doc(that.board.id).delete().then(() => {
-          $nuxt.$router.push('/')
-        }).catch(() => {
-          
-        })
-      } catch (error) {
-        $nuxt.$router.push('/')
-      }
-    },
-    async updateBoard() {
-      let that = this
-      await that.$fire.firestore
-        .collection('users')
-        .doc(that.$fire.auth.currentUser.uid)
-        .collection('boards')
-        .doc(that.board.id)
-        .update(that.board, { merge: true })
+        .doc(board.value.id)
+        .update(board.value, { merge: true })
+    }
+
+    async function allowDrop(ev) {
+      console.log('allowDrop')
+      ev.preventDefault()
+    }
+    async function drag(ev, card) {
+      console.log('drag', card)
+
+      currentCard.value = card
+    }
+
+    async function drop(ev, listId) {
+      console.log('drop', listId)
+      ev.preventDefault()
+      updateCardList(listId)
+    }
+
+    async function cek(){
+      const myimg = board.value?.image
+      console.log('board', board.value?.image)
+      console.log('myimg', myimg.downloadURL)
     }
   },
-}
+})
 </script>
 
 <style lang="scss" scoped>

@@ -8,7 +8,9 @@
           <v-container fluid class="jello-topbar">
             <v-row no-gutters align="center" justify="start">
               <v-col cols="1" class="flex-grow-0 flex-shrink-0">
-                <v-icon @click="drawer = true">mdi-menu</v-icon>
+                <nuxt-link to="/">
+                  <v-icon>mdi-home</v-icon>
+                </nuxt-link>
               </v-col>
               <v-col
                 cols="1"
@@ -24,16 +26,22 @@
                   </nuxt-link>
                 </v-row>
               </v-col>
+              <v-col class="flex-grow-0 flex-shrink-0">
+                <!-- <v-icon>mdi-power-standby</v-icon> -->
+                <nuxt-link to="/auth/signout">
+                  <v-icon>mdi-power-standby</v-icon>
+                </nuxt-link>
+              </v-col>
             </v-row>
           </v-container>
-          <v-navigation-drawer v-model="drawer" fixed left class="d-block">
+          <!-- <v-navigation-drawer v-model="drawer" fixed left class="d-block">
               <v-container fluid class="jello-topbar">
                 <v-row no-gutters align="center" justify="space-between">
                   <v-icon @click="drawer = false">mdi-close</v-icon>
 
                     <v-row no-gutters align="center" justify="end"> 
-                        <!-- <p v-if="user" class="jello-user">Signed in as<br>
-                        {{ $nuxt.$fire.auth.currentUser.email }}</p> -->
+                        <p v-if="user" class="jello-user">Signed in as<br>
+                        {{ $nuxt.$fire.auth.currentUser.email }}</p>
                         &nbsp;
                          <v-icon>mdi-account-circle-outline</v-icon>
                     </v-row>
@@ -58,7 +66,7 @@
                   </div>
                 </div>
               </v-container>
-          </v-navigation-drawer>
+          </v-navigation-drawer> -->
         </div>
         <!-- content -->
           <nuxt />
