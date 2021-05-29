@@ -39,40 +39,6 @@
     
     <div class="my-board d-flex flex-row pr-6 pt-3">
       <CardComp v-for="list in board.lists" v-bind:key="list.id" :list="list" @addCardModal="addCardModal" @deleteList="deleteList" @editCard="editCard" @drop="drop" @allowDrop="allowDrop" @drag="drag" />
-       <!-- <div
-        v-for="list in board.lists"
-        @drop="drop($event, list.id)"
-        @dragover="allowDrop($event)"
-        class="d-flex flex-column pt-3 mr-6 list"
-        v-bind:key="list.id"
-      >
-      <div class="d-flex flex-row justify-space-between">
-        <h4>{{ list.title }}</h4>
-        <v-icon small @click="deleteList(list.id)">mdi-delete-outline</v-icon>
-      </div>
-
-       <v-card
-          v-for="card in list.cards"
-          :draggable="true"
-          @dragover.prevent
-          @dragstart="drag($event, card)"
-          class="mt-5"
-          @click="editCard(card)"
-          v-bind:key="card.id"
-        >
-          <v-card-text> {{ card.title }} </v-card-text>
-        </v-card>
-
-        <v-btn
-          depressed
-          @click="
-            dialogCard = true
-            listId = list.id
-          "
-          class="mt-3"
-          >Add card</v-btn
-        >
-      </div> -->
 
        <v-dialog v-model="dialogCard" persistent max-width="600px">
         <v-card elevation="0">
@@ -106,7 +72,7 @@
 
 
       <div class="d-flex flex-row">
-        <v-btn depressed @click="dialog = true" class="create-list"
+        <v-btn depressed @click="dialog = true" class="create-list mt-3"
           >
           <v-icon>mdi-plus-thick</v-icon>
           Add new list</v-btn

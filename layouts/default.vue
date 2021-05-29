@@ -3,25 +3,11 @@
     <v-content >
         <div class="d-block">
           <v-container fluid class="jello-topbar">
-            <v-row class="my-top" no-gutters align="center" justify="start">
+            <v-row class="my-top justify-space-between" no-gutters align="center">
               <v-col cols="1" class="flex-grow-0 flex-shrink-0">
                 <nuxt-link to="/">
-                  <v-icon>mdi-home</v-icon>
+                  <h3 class="logo">Ngodingbentar</h3>
                 </nuxt-link>
-              </v-col>
-              <v-col
-                cols="1"
-                style="min-width: 100px; max-width:100%;"
-                class="flex-grow-1 flex-shrink-0"
-              >
-                <v-row no-gutters align="center" justify="center">
-                  <nuxt-link to="/">
-                    <v-row no-gutters align="center" justify="center">
-                      <h3 class="logo">Board</h3>
-                      <!-- <button @click="cek">cek</button> -->
-                    </v-row>
-                  </nuxt-link>
-                </v-row>
               </v-col>
               <v-col class="flex-grow-0 flex-shrink-0">
                 <UserComp v-if="userStore" />

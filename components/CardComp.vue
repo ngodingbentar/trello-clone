@@ -1,12 +1,10 @@
 <template>
-<!-- <h1>card</h1> -->
   <div
     @drop="$emit('drop',$event, list.id)"
     @dragover="$emit('allowDrop',$event)"
     class="d-flex flex-column pt-3 mr-6 list"
     v-bind:key="list.id"
   >
-  <!-- <button @click="$emit('close')">close</button> -->
     <div class="dew">
       <div class="d-flex flex-row justify-space-between">
         <h4>{{ list.title }}</h4>
@@ -65,15 +63,6 @@ export default defineComponent({
 .board {
   padding: 12px;
   height: 100vh;
-  // overflow: scroll;
-  // .list {
-  //   min-width: 250px;
-  //   background-color: rgb(228 228 228 / 35%);
-  //   padding: 25px;
-  //   border-radius: 12px;
-
-  //   min-height: 70vh;
-  // }
   .create-list {
     background-color: rgb(228 228 228 / 35%);
   }
@@ -92,10 +81,11 @@ export default defineComponent({
 }
 
 .dew{
-  background: cadetblue;
   min-width: 250px;
-  // background-color: rgb(228 228 228 / 35%);
+  max-height: 500px;
+  background-color: rgb(228 228 228 / 35%);
   padding: 25px;
   border-radius: 12px;
+  overflow-Y: auto;
 }
 </style>
