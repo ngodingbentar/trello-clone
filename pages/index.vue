@@ -198,7 +198,7 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 .main-board{
-  width: 20%;
+  width: 22%;
   height: 100px;
   margin: 10px;
 }

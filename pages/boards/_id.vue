@@ -137,11 +137,14 @@
 
       <v-dialog v-model="dialogEditCard" persistent max-width="600px">
         <v-card elevation="0">
-          <v-card-title>
+          <v-card-title class="justify-space-between flex">
             <span class="headline">{{ currentCard.title }}</span>
+            <v-btn depressed @click="deleteCard()">
+              <v-icon>mdi-delete-outline</v-icon>
+            </v-btn>
           </v-card-title>
-          <v-card-text>
-            <v-container>
+          <v-card-text class="card-edit">
+            <div>
               <v-row>
                 <v-col cols="12">
                   <v-text-field
@@ -183,13 +186,10 @@
                   ></v-select>
                 </v-col>
               </v-row>
-            </v-container>
+            </div>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="red darken-1" text @click="deleteCard()">
-              Delete
-            </v-btn>
             <v-btn color="blue darken-1" text @click="dialogEditCard = false">
               Close
             </v-btn>
@@ -229,7 +229,7 @@ export default defineComponent({
     const board = ref([])
     const listId=ref('')
     const list=ref({
-      title: 'dew'
+      title: 'title'
     })
     const card=ref({
       title: '',
@@ -321,7 +321,6 @@ export default defineComponent({
       //add card
       if (card.value.title != '') {
         card.value.id = uuidv4()
-        card.value.dateCreated = Date.now()
         card.value.listId = listId.value
         if (board.value.lists) {
           let index = -1
@@ -399,7 +398,6 @@ export default defineComponent({
       if (list.value.title != '') {
         list.value.id = uuidv4()
         list.value.cards = []
-        list.value.dateCreated = Date.now()
         if (board.value.lists) {
           board.value.lists.push(list.value)
         } else {
@@ -508,5 +506,39 @@ export default defineComponent({
 
 .my-board {
   overflow-x: auto;
+  min-height: 80vh;
+}
+
+.card-edit{
+  padding: 0 20px;
+}
+
+// overflow
+/* width */
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(192, 191, 191); 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #dddcdc; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #cccccc; 
+}
+
+@media only screen and (min-height: 800px) {
+  .my-board {
+    min-height: 83vh;
+  }
 }
 </style>

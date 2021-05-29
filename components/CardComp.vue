@@ -2,7 +2,7 @@
   <div
     @drop="$emit('drop',$event, list.id)"
     @dragover="$emit('allowDrop',$event)"
-    class="d-flex flex-column pt-3 mr-6 list"
+    class="d-flex flex-column pt-3 mr-6 list mb-6"
     v-bind:key="list.id"
   >
     <div class="dew">
@@ -90,7 +90,7 @@ export default defineComponent({
 
 .dew{
   min-width: 250px;
-  max-height: 500px;
+  max-height: 70vh;
   background-color: rgb(228 228 228 / 35%);
   padding: 25px;
   border-radius: 12px;
@@ -116,6 +116,8 @@ export default defineComponent({
   display: flex;
   justify-content: flex-end;
 } 
+
+// overflow
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
