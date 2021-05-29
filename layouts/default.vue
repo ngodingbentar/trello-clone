@@ -1,9 +1,6 @@
 <template>
   <v-app>
     <v-content >
-        <!-- desktop -->
-        <!-- <div class="d-none d-md-block"></div> -->
-        <!-- mobile -->
         <div class="d-block">
           <v-container fluid class="jello-topbar">
             <v-row no-gutters align="center" justify="start">
@@ -27,46 +24,14 @@
                 </v-row>
               </v-col>
               <v-col class="flex-grow-0 flex-shrink-0">
-                <!-- <v-icon>mdi-power-standby</v-icon> -->
-                <nuxt-link to="/auth/signout">
+                <!-- <p v-if="userStore">{{emailStore}}</p> -->
+                <UserComp v-if="userStore" />
+                <!-- <nuxt-link to="/auth/signout">
                   <v-icon>mdi-power-standby</v-icon>
-                </nuxt-link>
+                </nuxt-link> -->
               </v-col>
             </v-row>
           </v-container>
-          <!-- <v-navigation-drawer v-model="drawer" fixed left class="d-block">
-              <v-container fluid class="jello-topbar">
-                <v-row no-gutters align="center" justify="space-between">
-                  <v-icon @click="drawer = false">mdi-close</v-icon>
-
-                    <v-row no-gutters align="center" justify="end"> 
-                        <p v-if="user" class="jello-user">Signed in as<br>
-                        {{ $nuxt.$fire.auth.currentUser.email }}</p>
-                        &nbsp;
-                         <v-icon>mdi-account-circle-outline</v-icon>
-                    </v-row>
-
-                </v-row>
-              </v-container>
-              <v-container class="d-block menu-items">
-                <div class="d-flex flex-column">
-                  <div class="d-flex">
-                    <br />
-                    
-                  </div>
-                  <div class="d-flex">
-                    <nuxt-link to="/">
-                      <v-icon>mdi-view-dashboard-variant-outline</v-icon>&nbsp;&nbsp;<b>My Boards</b>
-                    </nuxt-link>
-                  </div>
-                  <div class="d-flex">
-                    <nuxt-link to="/auth/signout">
-                      <v-icon>mdi-exit-to-app</v-icon>&nbsp;&nbsp;<b>Sign out</b>
-                    </nuxt-link>
-                  </div>
-                </div>
-              </v-container>
-          </v-navigation-drawer> -->
         </div>
         <!-- content -->
           <nuxt />
@@ -75,10 +40,21 @@
 </template>
 
 <script>
-import { computed, defineComponent, ref } from '@nuxtjs/composition-api'
+import { computed, defineComponent, ref, useContext } from '@nuxtjs/composition-api'
+import UserComp from '~/components/userComp.vue'
 
 export default defineComponent({
+  components: {
+    UserComp,
+  },
   setup() {
+    const { store, route, app } = useContext()
+    const userStore = computed(() => store.state.isSignin)
+    // const emailStore = ref('')
+    // if(userStore){
+    //   emailStore.value = store.state.user.email
+    //   console.log('emailStore.value', emailStore.value)
+    // }
 
     const drawer = ref(false)
     // const user = ref($nuxt.$fire.auth.currentUser.email)
@@ -86,11 +62,12 @@ export default defineComponent({
 
     return {
       drawer,
+      userStore,
       cek
     }
 
     async function cek(){
-      console.log(user.value)
+      console.log(userStore)
     }
   },
 })

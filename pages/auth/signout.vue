@@ -1,11 +1,22 @@
 <template>
-  <h1>Sign out</h1>
+  <h1>Sign out...!!!</h1>
 </template>
 
 <script>
-export default {
-  asyncData() {
-    $nuxt.$fire.auth.signOut()
-  }
-}
+import { defineComponent } from '@nuxtjs/composition-api'
+
+export default defineComponent({
+  setup() {
+    signOut()
+    return {}
+
+    async function signOut(){
+      try{
+        $nuxt.$fire.auth.signOut()
+      }catch(err){
+        console.log('err', err)
+      }
+    }
+  },
+})
 </script>

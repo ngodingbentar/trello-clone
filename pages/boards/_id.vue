@@ -211,7 +211,6 @@ export default defineComponent({
     }
 
     async function asyncData(params) {
-      // console.log('params', params)
       const boardRef = $nuxt.$fire.firestore
         .collection('users')
         .doc($nuxt.$fire.auth.currentUser.uid)
@@ -252,8 +251,6 @@ export default defineComponent({
       //show modal to capture card name
       //add card
       if (card.value.title != '') {
-        //add to firebase
-        //Let's give our card a created date.
         card.value.id = uuidv4()
         card.value.dateCreated = Date.now()
         card.value.listId = listId.value
@@ -267,7 +264,6 @@ export default defineComponent({
             count++
           }
           if (index != -1) {
-            //we found the list, now push our card
             if (board.value.lists[index].cards) {
               board.value.lists[index].cards.push(card.value)
             } else {
@@ -292,7 +288,6 @@ export default defineComponent({
       dialogEditCard.value = false
       for (const list of board.value.lists) {
         if (currentCard.value.listId === list.id) {
-          //correct list, now find card
           for (const card of list.cards) {
             if (card.id === currentCard.value.id) {
               card = currentCard.value
@@ -313,7 +308,6 @@ export default defineComponent({
       }
       for (const list of board.value.lists) {
         if (currentCard.value.listId === list.id) {
-          //correct list, now find card
           for (const card of list.cards) {
             if (card.id === currentCard.value.id) {
               index.list = i
