@@ -5,9 +5,11 @@
   >
     <div>
       <div class="d-flex justify-space-between">
-        <v-btn depressed>
+        <!-- <v-btn class="btn-title" depressed>
           <h3>{{ board.title }}</h3>
-        </v-btn>
+        </v-btn> -->
+        <input class="input-title" v-model="board.title" @change="updateBoard" />
+        <!-- <button @click="cek">cek</button> -->
         
         <v-btn depressed @click="dialogDelete = true">
           <v-icon>mdi-delete-outline</v-icon>
@@ -33,7 +35,7 @@
     <hr class="mt-3" />
     
     <div class="my-board d-flex flex-row pr-6 pt-3">
-      <CardComp v-for="list in board.lists" v-bind:key="list.id" :list="list" @addCardModal="addCardModal" @deleteList="deleteList" @editCard="editCard" @drop="drop" @allowDrop="allowDrop" @drag="drag" />
+      <CardComp v-for="list in board.lists" v-bind:key="list.id" :list="list" @addCardModal="addCardModal" @deleteList="deleteList" @editCard="editCard" @drop="drop" @allowDrop="allowDrop" @drag="drag" @cek="cek" />
 
        <v-dialog v-model="dialogCard" persistent max-width="600px">
         <v-card elevation="0">
@@ -272,7 +274,8 @@ export default defineComponent({
       deleteCard,
       updateCard,
       deleteBoard,
-      addCardModal
+      addCardModal,
+      updateBoard
     }
 
     function addCardModal(x, y){
@@ -471,6 +474,10 @@ export default defineComponent({
       await updateBoard()
     }
 
+    function updateTitle(){
+      // console.log()
+    }
+
     async function updateBoard() {
       await $nuxt.$fire.firestore
         .collection('users')
@@ -494,6 +501,9 @@ export default defineComponent({
 
     async function cek(){
       // const myimg = board.value?.image
+      console.log(board.value)
+      console.log('currentCard',currentCard.value)
+      console.log('card',card)
     }
   },
 })
@@ -511,6 +521,20 @@ export default defineComponent({
 
 .card-edit{
   padding: 0 20px;
+}
+
+// .btn-title{
+//   width: 60%;
+// }
+
+input.input-title{
+  max-width: 100%;
+  padding: 0 16px;
+  background: #f5f5f5;
+}
+
+input.input-title:focus{
+  outline: none;
 }
 
 // overflow

@@ -5,10 +5,28 @@
     class="d-flex flex-column pt-3 mr-6 list mb-6"
     v-bind:key="list.id"
   >
+        <!-- <button @click="$emit('cek')">cek</button> -->
     <div class="dew">
       <div class="d-flex flex-row justify-space-between">
         <h4>{{ list.title }}</h4>
-        <v-icon small @click="$emit('deleteList',list.id)">mdi-delete-outline</v-icon>
+        <!-- <v-icon @click="$emit('deleteList',list.id)">mdi-delete-outline</v-icon> -->
+          <v-icon @click="dialogDeleteList = true">mdi-delete-outline</v-icon>
+        <v-dialog v-model="dialogDeleteList" persistent max-width="600px">
+          <v-card elevation="0">
+            <v-card-title>
+              <span class="headline">Delete List</span>
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialogDeleteList = false">
+                Close
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="$emit('deleteList',list.id)">
+                Delete
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
 
       <v-card
@@ -57,11 +75,13 @@ export default defineComponent({
     const userStore = computed(() => store.state.isSignin)
     const emailStore = computed(() => store.state.email)
     const drawer = ref(false)
+    const dialogDeleteList = ref(false)
 
     return {
       drawer,
       userStore,
       emailStore,
+      dialogDeleteList,
     }
   },
 })
