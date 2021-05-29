@@ -1,35 +1,32 @@
 <template>
 <!-- <h1>card</h1> -->
   <div
-    @drop="drop($event, list.id)"
-    @dragover="allowDrop($event)"
+    @drop="$emit('drop',$event, list.id)"
+    @dragover="$emit('allowDrop',$event)"
     class="d-flex flex-column pt-3 mr-6 list"
     v-bind:key="list.id"
   >
+  <!-- <button @click="$emit('close')">close</button> -->
     <div class="dew">
       <div class="d-flex flex-row justify-space-between">
         <h4>{{ list.title }}</h4>
-        <v-icon small @click="deleteList(list.id)">mdi-delete-outline</v-icon>
+        <v-icon small @click="$emit('deleteList',list.id)">mdi-delete-outline</v-icon>
       </div>
 
       <v-card
         v-for="card in list.cards"
         :draggable="true"
         @dragover.prevent
-        @dragstart="drag($event, card)"
+        @dragstart="$emit('drag',$event, card)"
         class="mt-5"
-        @click="editCard(card)"
+        @click="$emit('editCard',card)"
         v-bind:key="card.id"
       >
         <v-card-text> {{ card.title }} </v-card-text>
       </v-card>
-
       <v-btn
         depressed
-        @click="
-          dialogCard = true
-          listId = list.id
-        "
+        @click="$emit('addCardModal',dialogCard = true, listId = list.id)"
         class="mt-3"
         >Add card
       </v-btn>
@@ -47,7 +44,8 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup(props, {emit}) {
+    // emit('close')
     console.log(props)
     const { store, route, app } = useContext()
     const userStore = computed(() => store.state.isSignin)

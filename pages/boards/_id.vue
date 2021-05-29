@@ -38,7 +38,7 @@
     <hr class="mt-3" />
     
     <div class="my-board d-flex flex-row pr-6 pt-3">
-      <CardComp v-for="list in board.lists" v-bind:key="list.id" :list="list" />
+      <CardComp v-for="list in board.lists" v-bind:key="list.id" :list="list" @addCardModal="addCardModal" @deleteList="deleteList" @editCard="editCard" @drop="drop" @allowDrop="allowDrop" @drag="drag" />
        <!-- <div
         v-for="list in board.lists"
         @drop="drop($event, list.id)"
@@ -240,7 +240,13 @@ export default defineComponent({
       createCard,
       deleteCard,
       updateCard,
-      deleteBoard
+      deleteBoard,
+      addCardModal
+    }
+
+    function addCardModal(x, y){
+      dialogCard.value = x
+      listId.value = y
     }
 
     async function asyncData(params) {
