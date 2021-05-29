@@ -37,7 +37,7 @@
     </div>
     <hr class="mt-3" />
     
-    <div class="d-flex flex-row pr-6 pt-3">
+    <div class="my-board d-flex flex-row pr-6 pt-3">
        <div
         v-for="list in board.lists"
         @drop="drop($event, list.id)"
@@ -489,5 +489,8 @@ export default defineComponent({
     background-color: rgb(255, 255, 255, 0);
     padding: 0px !important;
   }
+}
+.my-board {
+  overflow-x: scroll;
 }
 </style>
