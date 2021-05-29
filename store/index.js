@@ -30,7 +30,6 @@ const mutations = {
   },
   SET_IS_SIGNIN(state) {
     state.isSignin = true
-    console.log('state', state)
   },
 }
 

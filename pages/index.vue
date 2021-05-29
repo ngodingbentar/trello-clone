@@ -30,7 +30,7 @@
               hide-inputs
               swatches-max-height="100"
             ></v-color-picker>
-            <div
+            <!-- <div
               class="d-flex flex-column align-center justify-center flex-grow-1 upload-block"
               @click="chooseImage"
               :style="`background-image: url('${
@@ -67,7 +67,7 @@
                   ></v-progress-circular>
                 </div>
               </template>
-            </div>
+            </div> -->
             <v-btn :disabled="!valid" color="primary" @click="createBoard"
               >Submit</v-btn
             >
@@ -123,21 +123,8 @@ export default defineComponent({
     const snackbar = ref(false)
     const snackbarText = ref('')
     const fileToUpload=ref({})
-    const dialogCard = ref(false)
-    const dialogEditCard = ref(false)
-    const drawer = ref(false)
-    const currentCard=ref({})
-    const cardDraggedId = ref('')
-    const cardDraggedListId = ref('')
     const boards = ref([])
     const currentImageId=ref('')
-    const listId=ref('')
-    const list=ref({
-      title: 'dew'
-    })
-    const card=ref({
-      title: ''
-    })
 
     const board= ref({
         title: '',

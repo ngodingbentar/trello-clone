@@ -1,16 +1,42 @@
 <template>
   <div
     class="d-flex flex-column board"
+    :style="board.color ? `background-color:${board.color}` : ''"
   >
   <!-- <button @click="cek">cek</button> -->
-  <div class="d-block">
+    <!-- <div class="d-block">
       <v-container fluid class="jello-topbar">
-        <div class="d-flex justify-space-between">
-          <v-icon small @click="deleteBoard()">mdi-delete-outline</v-icon>
+        <div class="d-flex justify-end ">
+          <v-icon class="btn-delete" small @click="deleteBoard()">mdi-delete-outline</v-icon>
         </div>
       </v-container>
+      <div class="d-flex justify-end ">
+        <v-icon @click="deleteBoard()">mdi-delete-outline</v-icon>
+      </div>
+    </div> -->
+    <div class="d-flex justify-space-between">
+      <h1>{{ board.title }}</h1>
+      <!-- <v-icon @click="dialogDelete = true">mdi-delete-outline</v-icon> -->
+      <v-btn depressed @click="dialogDelete = true">
+        <v-icon>mdi-delete-outline</v-icon>
+      </v-btn>
+      <v-dialog v-model="dialogDelete" persistent max-width="600px">
+        <v-card elevation="0">
+          <v-card-title>
+            <span class="headline">Hapus Board</span>
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialogDelete = false">
+              Close
+            </v-btn>
+            <v-btn color="blue darken-1" text @click="deleteBoard()">
+              Hapus
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
-    <h1>{{ board.title }}</h1>
     <small>created {{ board.dateCreated | formatDate }}</small>
     <div class="d-flex flex-row pr-6 pt-3">
        <div
@@ -163,6 +189,7 @@ export default defineComponent({
     const pageId = route.value.params.id
 
     const dialog = ref(false)
+    const dialogDelete = ref(false)
     const dialogCard = ref(false)
     const dialogEditCard = ref(false)
     const drawer = ref(false)
@@ -187,6 +214,7 @@ export default defineComponent({
 
     return {
       dialog,
+      dialogDelete,
       dialogCard,
       dialogEditCard,
       board,
@@ -239,7 +267,6 @@ export default defineComponent({
       .doc(tempId.value)
       .onSnapshot((doc) => {
         if (doc.exists) {
-          console.log('doc', doc.data())
           board.value = doc.data()
           board.value.id = tempId.value
         }
@@ -425,15 +452,16 @@ export default defineComponent({
     }
 
     async function cek(){
-      const myimg = board.value?.image
-      console.log('board', board.value?.image)
-      console.log('myimg', myimg.downloadURL)
+      // const myimg = board.value?.image
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
+.btn-delete{
+  font-size: large;
+}
 .board {
   padding: 12px;
   height: 100vh;
