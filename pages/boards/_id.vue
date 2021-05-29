@@ -63,7 +63,7 @@
               <v-row>
                 <v-col cols="12">
                   <v-text-field
-                    label="Enter a description for this card"
+                    label="Enter a label for this card"
                     v-model="card.label"
                     required
                   ></v-text-field>
@@ -149,6 +149,38 @@
                     v-model="currentCard.title"
                     required
                   ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Enter a description for this card"
+                    v-model="currentCard.description"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Enter a label for this card"
+                    v-model="currentCard.label"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  class="d-flex"
+                  cols="12"
+                  sm="6"
+                >
+                  <v-select
+                    v-model="currentCard.labelColor"
+                    :items="colors"
+                    label="Label Color"
+                    solo
+                  ></v-select>
                 </v-col>
               </v-row>
             </v-container>

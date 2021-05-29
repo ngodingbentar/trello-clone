@@ -50,7 +50,10 @@
         v-bind:key="board.id"
         @click="$router.push('/boards/' + board.id)"
       >
-        <v-card-title>
+        <v-card-title v-if="(board.title).length > 20">
+          {{ (board.title).substring(0, 20)}}. . .
+        </v-card-title>
+        <v-card-title v-else>
           {{ board.title }}
         </v-card-title>
       </v-card>
@@ -195,6 +198,20 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 .main-board{
-  margin: 20px 20px 0px 0px ;
+  width: 20%;
+  height: 100px;
+  margin: 10px;
+}
+
+@media only screen and (max-width: 700px) {
+  .main-board{
+    width: 42%;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .main-board{
+    width: 100%;
+  }
 }
 </style>

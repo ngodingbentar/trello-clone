@@ -52,9 +52,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props, {emit}) {
-    // emit('close')
-    console.log(props)
+  setup() {
     const { store, route, app } = useContext()
     const userStore = computed(() => store.state.isSignin)
     const emailStore = computed(() => store.state.email)
