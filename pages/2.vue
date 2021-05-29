@@ -181,23 +181,24 @@ export default {
     },
     createBoard() {
       let that = this
-      if (this.$refs.form.validate()) {
-        //Let's give our board a created date.
-        this.board.dateCreated = Date.now()
-        this.$fire.firestore
-          .collection('users')
-          .doc(this.$fire.auth.currentUser.uid)
-          .collection('boards')
-          .doc(this.currentImageId)
-          .set(this.board)
-          .then(function (docRef) {
-            that.dialog = false
-            that.$refs.form.reset()
-            that.snackbarText = 'Successfully created your board'
-            that.snackbar = true
-          })
-          .catch(function (error) {})
-      }
+      console.log(this.$refs['boardBackground'])
+
+      // if (this.$refs.form.validate()) {
+      //   this.board.dateCreated = Date.now()
+      //   this.$fire.firestore
+      //     .collection('users')
+      //     .doc(this.$fire.auth.currentUser.uid)
+      //     .collection('boards')
+      //     .doc(this.currentImageId)
+      //     .set(this.board)
+      //     .then(function (docRef) {
+      //       that.dialog = false
+      //       that.$refs.form.reset()
+      //       that.snackbarText = 'Successfully created your board'
+      //       that.snackbar = true
+      //     })
+      //     .catch(function (error) {})
+      // }
     },
     
     chooseImage() {

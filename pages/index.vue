@@ -8,7 +8,7 @@
           </v-row>
           <v-icon @click="dialog = false">mdi-close</v-icon>
         </v-row>
-        <!-- <v-form ref="form" v-model="valid">
+        <v-form ref="form" v-model="valid">
           <div class="d-flex flex-column">
             <v-text-field
               label="Board title"
@@ -72,7 +72,7 @@
               >Submit</v-btn
             >
           </div>
-        </v-form> -->
+        </v-form>
       </v-container>
     </v-dialog>
     <div class="d-flex flex-row align-center justify-space-between">
@@ -96,7 +96,7 @@
         </v-card-subtitle>
       </v-card>
     </div>
-    <!-- <v-snackbar
+    <v-snackbar
       :timeout="3000"
       v-model="snackbar"
       absolute
@@ -104,7 +104,7 @@
       color="primary"
     >
       {{ snackbarText }}
-    </v-snackbar> -->
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -118,6 +118,11 @@ export default defineComponent({
     const pageId = route.value.params.id
 
     const dialog = ref(false)
+    const valid = ref(false)
+    const enableColor = ref(false)
+    const snackbar = ref(false)
+    const snackbarText = ref('')
+    const fileToUpload=ref({})
     const dialogCard = ref(false)
     const dialogEditCard = ref(false)
     const drawer = ref(false)
@@ -152,17 +157,29 @@ export default defineComponent({
     
 
     const tempId = ref('')
+    const boardBackground = ref(null)
+    const form = ref(null)
 
     return {
       dialog,
+      valid,
+      enableColor,
+      boardBackground,
+      form,
+      snackbar,
+      snackbarText,
+      fileToUpload,
       boards,
       board,
       currentImageId,
-      addBoard
+      addBoard,
+      createBoard,
+      chooseImage
     }
 
     async function asyncData() {
       // console.log('params', params)
+      boardData.value = []
       const boardRef = $nuxt.$fire.firestore
         .collection('users')
         .doc($nuxt.$fire.auth.currentUser.uid)
@@ -184,7 +201,7 @@ export default defineComponent({
           }
         })
         .catch(function (error) {})
-        console.log('boardData.value', boardData.value)
+        // console.log('boardData.value', boardData.value)
         boards.value = boardData.value
         tempId.value = boardData.value.id
         // createdFunc()
@@ -194,6 +211,36 @@ export default defineComponent({
       //lets create a temp id we can use to save our doc and our storage files
       currentImageId.value = uuidv4()
       dialog.value = true
+    }
+
+    function createBoard() {
+      console.log(boardBackground.value)
+      console.log(form.value.validate())
+      if (form.value.validate()) {
+        board.value.dateCreated = Date.now()
+        $nuxt.$fire.firestore
+          .collection('users')
+          .doc($nuxt.$fire.auth.currentUser.uid)
+          .collection('boards')
+          .doc(currentImageId.value)
+          .set(board.value)
+          .then(function (docRef) {
+            dialog.value = false
+            form.value.reset()
+            snackbarText.value = 'Successfully created your board'
+            snackbar.value = true
+            asyncData()
+          })
+          .catch(function (error) {
+            console.log(error)
+          })
+
+        
+      }
+    }
+
+    function chooseImage() {
+      // this.$refs['boardBackground'].click()
     }
 
   },
