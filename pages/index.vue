@@ -30,44 +30,6 @@
               hide-inputs
               swatches-max-height="100"
             ></v-color-picker>
-            <!-- <div
-              class="d-flex flex-column align-center justify-center flex-grow-1 upload-block"
-              @click="chooseImage"
-              :style="`background-image: url('${
-                board.image.downloadURL ? board.image.downloadURL : ''
-              }');height:150px;background-size: cover;background-position: center;`"
-            >
-              <template
-                v-if="!fileToUpload.progress || fileToUpload.progress == 0"
-              >
-                <v-icon>mdi-camera</v-icon>
-                <p>Add a board background</p>
-                <input
-                  type="file"
-                  accept="jpg, jpeg, png"
-                  ref="boardBackground"
-                  multiple
-                  color="#f66f26"
-                  buffer-value="0"
-                  @click="onFileClicked($event)"
-                  @change="onFileSelected($event)"
-                  style="display: none"
-                />
-              </template>
-              <template
-                v-else-if="
-                  fileToUpload.progress > 0 && fileToUpload.progress < 100
-                "
-              >
-                <div class="text-center">
-                  <v-progress-circular
-                    :size="50"
-                    color="green"
-                    indeterminate
-                  ></v-progress-circular>
-                </div>
-              </template>
-            </div> -->
             <v-btn :disabled="!valid" color="primary" @click="createBoard"
               >Submit</v-btn
             >
@@ -82,7 +44,7 @@
     <div class="d-flex flex-wrap align-center justify-start">
       <p v-if="boards.length === 0">You have no boards yet.</p>
       <v-card
-        :style="board.image.downloadURL != '' ? `background:url(${board.image.downloadURL});`: board.color ? `background-color:${board.color}` : ''"
+        :style="board.color ? `background-color:${board.color}` : ''"
         class="jello-board-tile"
         v-for="board in boards"
         v-bind:key="board.id"
@@ -109,7 +71,7 @@
 </template>
 
 <script>
-import { computed, defineComponent, reactive, ref, useContext } from '@nuxtjs/composition-api'
+import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { v4 as uuidv4 } from 'uuid'
 
 export default defineComponent({
@@ -129,12 +91,6 @@ export default defineComponent({
     const board= ref({
         title: '',
         color: '',
-        image: {
-          name: '',
-          originalName: '',
-          downloadURL: '',
-          uuid: '',
-        },
       })
 
     const boardData = ref([])
@@ -161,7 +117,6 @@ export default defineComponent({
       currentImageId,
       addBoard,
       createBoard,
-      chooseImage
     }
 
     async function asyncData() {
@@ -224,10 +179,6 @@ export default defineComponent({
 
         
       }
-    }
-
-    function chooseImage() {
-      // this.$refs['boardBackground'].click()
     }
 
   },

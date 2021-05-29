@@ -1,43 +1,42 @@
 <template>
-  <div
+  <v-container
     class="d-flex flex-column board"
     :style="board.color ? `background-color:${board.color}` : ''"
   >
-  <!-- <button @click="cek">cek</button> -->
-    <!-- <div class="d-block">
-      <v-container fluid class="jello-topbar">
-        <div class="d-flex justify-end ">
-          <v-icon class="btn-delete" small @click="deleteBoard()">mdi-delete-outline</v-icon>
-        </div>
-      </v-container>
-      <div class="d-flex justify-end ">
-        <v-icon @click="deleteBoard()">mdi-delete-outline</v-icon>
+    <div>
+      <div class="d-flex justify-space-between">
+        <v-btn depressed>
+          <h3>{{ board.title }}</h3>
+        </v-btn>
+        
+        <v-btn depressed @click="dialogDelete = true">
+          <v-icon>mdi-delete-outline</v-icon>
+        </v-btn>
+        <v-dialog v-model="dialogDelete" persistent max-width="600px">
+          <v-card elevation="0">
+            <v-card-title>
+              <span class="headline">Delete Board</span>
+            </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialogDelete = false">
+                Close
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="deleteBoard()">
+                Delete
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
-    </div> -->
-    <div class="d-flex justify-space-between">
-      <h1>{{ board.title }}</h1>
-      <!-- <v-icon @click="dialogDelete = true">mdi-delete-outline</v-icon> -->
-      <v-btn depressed @click="dialogDelete = true">
-        <v-icon>mdi-delete-outline</v-icon>
-      </v-btn>
-      <v-dialog v-model="dialogDelete" persistent max-width="600px">
-        <v-card elevation="0">
-          <v-card-title>
-            <span class="headline">Hapus Board</span>
-          </v-card-title>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialogDelete = false">
-              Close
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="deleteBoard()">
-              Hapus
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <div class="mt-3">
+        <v-btn depressed>
+            <small>created {{ board.dateCreated | formatDate }}</small>
+        </v-btn>
+      </div>
     </div>
-    <small>created {{ board.dateCreated | formatDate }}</small>
+    <hr class="mt-3" />
+    
     <div class="d-flex flex-row pr-6 pt-3">
        <div
         v-for="list in board.lists"
@@ -78,14 +77,14 @@
        <v-dialog v-model="dialogCard" persistent max-width="600px">
         <v-card elevation="0">
           <v-card-title>
-            <span class="headline">Card name</span>
+            <span class="headline">Card title</span>
           </v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
                 <v-col cols="12">
                   <v-text-field
-                    label="Stuff to do"
+                    label="Enter a title for this card"
                     v-model="card.title"
                     required
                   ></v-text-field>
@@ -108,19 +107,21 @@
 
       <div class="d-flex flex-row">
         <v-btn depressed @click="dialog = true" class="create-list"
-          >Create new list</v-btn
+          >
+          <v-icon>mdi-plus-thick</v-icon>
+          Add new list</v-btn
         >
         <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card elevation="0">
             <v-card-title>
-              <span class="headline">List name</span>
+              <span class="headline">List title</span>
             </v-card-title>
             <v-card-text>
               <v-container>
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
-                      label="Stuff to do"
+                      label="Enter list title"
                       v-model="list.title"
                       required
                     ></v-text-field>
@@ -174,7 +175,7 @@
         </v-card>
       </v-dialog>
     </div>
-  </div>
+  </v-container>
 </template>
 
 

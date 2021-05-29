@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Knewave&display=swap');
 
 .logo {
-  font-family: 'Knewave', cursive;
+  // font-family: 'Knewave', cursive;
   letter-spacing: 3px;
+  color: white;
 }
 
 .fancy-title {
@@ -16,7 +17,17 @@
 
 
 .jello-topbar {
-  background-color: $secondary-color;
+  background-color: $primary-color;
+  color: white;
+  padding: 0 80px;
+}
+
+.jello-topbar .my-top {
+  padding: 0 60px;
+}
+
+.jello-topbar .v-icon.v-icon{
+  color: white !important;
 }
 
 .jello-user {
@@ -29,5 +40,11 @@
   margin: 20px 20px 0px 0px ;
   .v-card__subtitle {
     font-size: 8px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .jello-topbar .my-top {
+    padding: 0 20px;
   }
 }
