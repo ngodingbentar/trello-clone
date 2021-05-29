@@ -45,7 +45,7 @@
       <p v-if="boards.length === 0">You have no boards yet.</p>
       <v-card
         :style="board.color ? `background-color:${board.color}` : ''"
-        class="jello-board-tile"
+        class="main-board"
         v-for="board in boards"
         v-bind:key="board.id"
         @click="$router.push('/boards/' + board.id)"
@@ -53,9 +53,6 @@
         <v-card-title>
           {{ board.title }}
         </v-card-title>
-        <v-card-subtitle>
-          created {{ board.dateCreated | formatDate }}
-        </v-card-subtitle>
       </v-card>
     </div>
     <v-snackbar
@@ -196,5 +193,8 @@ export default defineComponent({
   padding: 30px;
   border-radius: 15px;
   margin-bottom: 20px;
+}
+.main-board{
+  margin: 20px 20px 0px 0px ;
 }
 </style>

@@ -29,11 +29,6 @@
           </v-card>
         </v-dialog>
       </div>
-      <div class="mt-3">
-        <v-btn depressed>
-            <small>created {{ board.dateCreated | formatDate }}</small>
-        </v-btn>
-      </div>
     </div>
     <hr class="mt-3" />
     
