@@ -56,6 +56,38 @@
                   ></v-text-field>
                 </v-col>
               </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Enter a description for this card"
+                    v-model="card.description"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Enter a description for this card"
+                    v-model="card.label"
+                    required
+                  ></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  class="d-flex"
+                  cols="12"
+                  sm="6"
+                >
+                  <v-select
+                    v-model="card.labelColor"
+                    :items="colors"
+                    label="Label Color"
+                    solo
+                  ></v-select>
+                </v-col>
+              </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
@@ -173,8 +205,13 @@ export default defineComponent({
       title: 'dew'
     })
     const card=ref({
-      title: ''
+      title: '',
+      description: '',
+      label: '',
+      labelColor: ''
     })
+
+    const colors = ['red', 'blue', 'green', 'black']
 
     const boardData = ref({})
 
@@ -189,6 +226,7 @@ export default defineComponent({
       dialogCard,
       dialogEditCard,
       board,
+      colors,
       card,
       drawer,
       cardDraggedId,
@@ -277,6 +315,7 @@ export default defineComponent({
           }
         }
         await updateBoard()
+        // console.log('createCard', card.value)
         card.value = {}
         listId.value = ''
       }

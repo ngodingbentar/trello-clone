@@ -16,11 +16,21 @@
         :draggable="true"
         @dragover.prevent
         @dragstart="$emit('drag',$event, card)"
-        class="mt-5"
+        class="mt-5 my-card"
         @click="$emit('editCard',card)"
         v-bind:key="card.id"
       >
-        <v-card-text> {{ card.title }} </v-card-text>
+        <!-- <v-card-text> {{ card.title }} </v-card-text>
+        <v-card-text> {{ card.label }} </v-card-text> -->
+        <p class="p-card">{{ card.title }}</p>
+        <div class="c-label">
+          <p
+            :style="card.labelColor ? `background-color:${card.labelColor}` : ''" 
+            class="p-card p-label"
+          >
+            {{ card.label }}
+          </p>
+        </div>
       </v-card>
       <v-btn
         depressed
@@ -89,6 +99,25 @@ export default defineComponent({
   overflow-Y: auto;
 }
 
+.my-card{
+  padding: 10px 13px;
+}
+
+.p-card {
+  margin: 3px 0;
+}
+
+.p-label{
+  font-size: 12px;
+  border-radius: 5px;
+  padding: 3px 10px;
+  color: white;
+}
+
+.c-label{
+  display: flex;
+  justify-content: flex-end;
+} 
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
