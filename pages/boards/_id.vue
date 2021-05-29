@@ -38,7 +38,8 @@
     <hr class="mt-3" />
     
     <div class="my-board d-flex flex-row pr-6 pt-3">
-       <div
+      <CardComp v-for="list in board.lists" v-bind:key="list.id" :list="list" />
+       <!-- <div
         v-for="list in board.lists"
         @drop="drop($event, list.id)"
         @dragover="allowDrop($event)"
@@ -61,18 +62,17 @@
         >
           <v-card-text> {{ card.title }} </v-card-text>
         </v-card>
-        
-        
+
         <v-btn
           depressed
           @click="
             dialogCard = true
             listId = list.id
           "
-          class="mt-auto"
+          class="mt-3"
           >Add card</v-btn
         >
-      </div>
+      </div> -->
 
        <v-dialog v-model="dialogCard" persistent max-width="600px">
         <v-card elevation="0">
@@ -182,9 +182,13 @@
 <script>
 import { defineComponent, ref, useContext } from '@nuxtjs/composition-api'
 import { v4 as uuidv4 } from 'uuid'
+import CardComp from '~/components/CardComp.vue'
 
 export default defineComponent({
   // layout: 'board',
+  components: {
+    CardComp,
+  },
   setup() {
     const { route } = useContext()
     const pageId = route.value.params.id
@@ -463,34 +467,8 @@ export default defineComponent({
 .btn-delete{
   font-size: large;
 }
-.board {
-  padding: 12px;
-  height: 100vh;
-  // overflow: scroll;
-  .list {
-    min-width: 250px;
-    background-color: rgb(228 228 228 / 35%);
-    padding: 25px;
-    border-radius: 12px;
-    min-height: 70vh;
-  }
-  .create-list {
-    background-color: rgb(228 228 228 / 35%);
-  }
-  a {
-    text-decoration: none;
-  }
-  .menu-items a {
-    color: $text-color;
-    padding: 10px 0px 10px 3px;
-    font-size: 24px;
-  }
-  .jello-topbar {
-    background-color: rgb(255, 255, 255, 0);
-    padding: 0px !important;
-  }
-}
+
 .my-board {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 </style>
