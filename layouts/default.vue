@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-content >
+    <v-main >
         <div class="d-block">
           <v-container fluid class="jello-topbar">
             <v-row class="my-top justify-space-between" no-gutters align="center">
@@ -17,7 +17,7 @@
         </div>
         <!-- content -->
           <nuxt />
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
