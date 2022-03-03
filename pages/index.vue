@@ -37,11 +37,11 @@
         </v-form>
       </div>
     </v-dialog>
-    <div class="d-flex flex-row align-center justify-space-between">
-      <h1>My Boards</h1>
+    <div class="px-8 py-4 d-flex flex-row align-center justify-space-between">
+      <div class="text-xl font-bold ">My Boards</div>
       <v-btn small depressed @click="addBoard">ADD BOARD</v-btn>
     </div>
-    <div class="d-flex flex-wrap align-center justify-start">
+    <div class="px-8 d-flex flex-wrap align-center justify-start">
       <p v-if="boards.length === 0">You have no boards yet.</p>
       <v-card
         :style="board.color ? `background-color:${board.color}` : ''"

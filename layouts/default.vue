@@ -1,12 +1,12 @@
 <template>
   <v-app>
     <v-main >
-        <div class="d-block py-4">
-          <div fluid class="app-topbar">
-            <v-row class="my-top justify-space-between" no-gutters align="center">
-              <v-col cols="1" class="flex-grow-0 flex-shrink-0">
+        <div class="d-block">
+          <div fluid class="app-topbar py-4">
+            <v-row class="justify-space-between" no-gutters align="center">
+              <v-col class="flex-grow-0 flex-shrink-0">
                 <nuxt-link to="/">
-                  <h3 class="logo">Ngodingbentar</h3>
+                  <p class="mb-0 text-xl font-bold text-white">Ngodingbentar</p>
                 </nuxt-link>
               </v-col>
               <v-col class="flex-grow-0 flex-shrink-0">

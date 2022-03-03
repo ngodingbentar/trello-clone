@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex flex-column board board-detail p-8"
+    class="d-flex flex-column board board-detail sm:p-4 xs:p-4 md:p-4"
     :style="board.color ? `background-color:${board.color}` : ''"
   >
     <div>
