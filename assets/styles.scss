@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Knewave&display=swap');
-
+.p-8 {
+  padding: 2rem;
+}
+.py-4 {
+  padding-top: 1rem; /* 16px */
+  padding-bottom: 1rem; /* 16px */
+}
 .logo {
   // font-family: 'Knewave', cursive;
   letter-spacing: 3px;
@@ -11,17 +17,17 @@
 }
 
 
-.jello-topbar {
+.app-topbar {
   background-color: $primary-color;
   color: white;
   padding: 0 80px;
 }
 
-.jello-topbar .my-top {
+.app-topbar .my-top {
   padding: 0 60px;
 }
 
-.jello-topbar .v-icon.v-icon{
+.app-topbar .v-icon.v-icon{
   color: white !important;
 }
 
@@ -39,7 +45,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .jello-topbar .my-top {
+  .app-topbar .my-top {
     padding: 0 20px;
   }
 }

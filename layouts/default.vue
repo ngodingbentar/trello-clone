@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-main >
-        <div class="d-block">
-          <v-container fluid class="jello-topbar">
+        <div class="d-block py-4">
+          <div fluid class="app-topbar">
             <v-row class="my-top justify-space-between" no-gutters align="center">
               <v-col cols="1" class="flex-grow-0 flex-shrink-0">
                 <nuxt-link to="/">
@@ -13,7 +13,7 @@
                 <UserComp v-if="userStore" />
               </v-col>
             </v-row>
-          </v-container>
+          </div>
         </div>
         <!-- content -->
           <nuxt />

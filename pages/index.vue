@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <div>
     <v-dialog v-model="dialog" max-width="355" persistent>
-      <v-container class="d-block">
+      <div class="d-block">
         <v-row no-gutters align="center" justify="space-between">
           <v-row no-gutters>
             <h3>Add Board</h3>
@@ -35,7 +35,7 @@
             >
           </div>
         </v-form>
-      </v-container>
+      </div>
     </v-dialog>
     <div class="d-flex flex-row align-center justify-space-between">
       <h1>My Boards</h1>
@@ -67,7 +67,7 @@
     >
       {{ snackbarText }}
     </v-snackbar>
-  </v-container>
+  </div>
 </template>
 
 <script>

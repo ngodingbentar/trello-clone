@@ -102,7 +102,7 @@ export default defineComponent({
     padding: 10px 0px 10px 3px;
     font-size: 24px;
   }
-  .jello-topbar {
+  .app-topbar {
     background-color: rgb(255, 255, 255, 0);
     padding: 0px !important;
   }

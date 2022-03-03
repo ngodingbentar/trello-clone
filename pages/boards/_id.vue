@@ -1,6 +1,6 @@
 <template>
-  <v-container
-    class="d-flex flex-column board"
+  <div
+    class="d-flex flex-column board board-detail p-8"
     :style="board.color ? `background-color:${board.color}` : ''"
   >
     <div>
@@ -43,7 +43,7 @@
             <span class="headline">Card title</span>
           </v-card-title>
           <v-card-text>
-            <v-container>
+            <div>
               <v-row>
                 <v-col cols="12">
                   <v-text-field
@@ -85,7 +85,7 @@
                   ></v-select>
                 </v-col>
               </v-row>
-            </v-container>
+            </div>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -112,7 +112,7 @@
               <span class="headline">List title</span>
             </v-card-title>
             <v-card-text>
-              <v-container>
+              <div>
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
@@ -122,7 +122,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-              </v-container>
+              </div>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -202,7 +202,7 @@
         </v-card>
       </v-dialog>
     </div>
-  </v-container>
+  </div>
 </template>
 
 
@@ -510,6 +510,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.board-detail {
+  // padding: 20px;
+}
 .btn-delete{
   font-size: large;
 }
@@ -531,6 +534,7 @@ input.input-title{
   max-width: 100%;
   padding: 0 16px;
   background: #f5f5f5;
+  border-radius: 5px;
 }
 
 input.input-title:focus{
